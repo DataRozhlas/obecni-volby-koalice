@@ -4,7 +4,7 @@ published: "27. září 2018"
 coverimg: https://interaktivni.rozhlas.cz/brexit/media/cover.jpg
 coverimg_note: ""
 styles: []
-libraries: [jquery, highcharts] #jquery, d3, d3v5, d3csv, highcharts, datatables
+libraries: [jquery, highcharts, 'https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js'] #jquery, d3, d3v5, d3csv, highcharts, datatables
 options: [] #wide, noheader (, nopic)
 ---
 
@@ -86,7 +86,9 @@ A výjimkou nejsou ani Zelení. „Koalice si schvalují místní organizace a m
 
 ## Interaktivní graf koalic 2018
 
-<iframe src="https://data.irozhlas.cz/komunalne-koalicni-kolecko-18/www/" width="100%" height="600px" frameborder="0" scrolling="no"></iframe>
+<wide>
+<div id="kolecko"></div>
+</wide>
 
 _Velikost pruhu odpovídá počtu kandidátů obou stran v koalici. Barva pruhu neříká nic._
 

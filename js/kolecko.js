@@ -1,0 +1,141 @@
+(function(){var Tooltip;window.Tooltip=Tooltip=function(){Tooltip.displayName="Tooltip";var prototype=Tooltip.prototype,constructor=Tooltip;Tooltip.counter=0;function Tooltip(options){var ref$;this.options=options!=null?options:{};this.onMouseMove=bind$(this,"onMouseMove",prototype);this.eventId="tooltip-"+constructor.counter++;(ref$=this.options).parent==null&&(ref$.parent=d3.select("body"));d3.select(document).on("mousemove."+this.eventId,bind$(this,"onMouseMove"))}prototype.watchElements=function(){var this$=this;d3.select(document).on("mouseover."+this.eventId,function(){var currentTarget,content;currentTarget=d3.event.target;do{content=currentTarget.getAttribute("data-tooltip");currentTarget=currentTarget.parentNode}while(currentTarget!==document&&content===null);if(!content){return}content=unescape(content);if(!content.length){return}return this$.display(content)});return d3.select(document).on("mouseout."+this.eventId,bind$(this,"hide"))};prototype.display=function(content){var x$;x$=this.$element=this.options.parent.append("div");x$.attr("class","tooltip");x$.html(content);return this.setPositionByMouse()};prototype.hide=function(){if(!this.$element){return}this.$element.remove();this.$element=null;return this.mouseBound=false};prototype.reposition=function(arg$){var left,top,clientLeft,clientTop,dX,dY,element,width,maxLeft,topMargin,x$;left=arg$[0],top=arg$[1],clientLeft=arg$[2],clientTop=arg$[3];dX=left-clientLeft;dY=top-clientTop;element=this.$element[0][0];width=element.offsetWidth;left-=width/2;maxLeft=(window.innerWidth||document.documentElement.clientWidth)-width;top-=element.offsetHeight;left=Math.max(dX,left);left=Math.min(left,dX+maxLeft);if(top<=19+dY){topMargin=-20;top+=element.offsetHeight-2*topMargin}x$=this.$element;x$.style("left",left+"px");x$.style("top",top+"px");return x$};prototype.setPositionByMouse=function(){this.mouseBound=true;if(this.lastMousePosition){return this.reposition(this.lastMousePosition)}};prototype.onMouseMove=function(){var evt;evt=d3.event;this.lastMousePosition=[evt.pageX||evt.clientX,evt.pageY||evt.clientY,evt.clientX,evt.clientY];if(this.mouseBound){return this.reposition(this.lastMousePosition)}};return Tooltip}();function bind$(obj,key,target){return function(){return(target||obj)[key].apply(obj,arguments)}}}).call(this);
+
+    
+    getData = function(){
+      var koalice, zkratky, indices, i, i$, len$, ref$, a, b, out, aNazev, bNazev, pocet, out_arr, res$, strana, obj, len, arr, j$, len1$;
+      koalice = [["KDU-ČSL", "TOP 09", 829], ["KDU-ČSL", "STAN", 346], ["KDU-ČSL", "ODS", 228], ["KDU-ČSL", "Zelení", 368], ["KDU-ČSL", "Svobodní", 54], ["KDU-ČSL", "Piráti", 40], ["KDU-ČSL", "Soukromníci", 27], ["KDU-ČSL", "ČSSD", 39], ["TOP 09", "Zelení", 191], ["TOP 09", "STAN", 701], ["TOP 09", "ODS", 205], ["TOP 09", "Piráti", 112], ["TOP 09", "Svobodní", 112], ["STAN", "Svobodní", 127], ["STAN", "Piráti", 171], ["STAN", "ODS", 57], ["STAN", "Zelení", 35], ["ODS", "Svobodní", 616], ["ODS", "Soukromníci", 43], ["Svobodní", "Soukromníci", 192], ["Svobodní", "Piráti", 60], ["Slušní lidé", "Soukromníci", 394], ["Zelení", "Piráti", 351], ["Zelení", "ČSSD", 41], ["SPD", "SPOZ", 162], ["SPOZ", "KSČM", 56], ["SPOZ", "ČSSD", 46]];
+      zkratky = {
+        "Strana zelených": "SZ"
+      };
+      indices = {};
+      i = 0;
+      for (i$ = 0, len$ = koalice.length; i$ < len$; ++i$) {
+        ref$ = koalice[i$], a = ref$[0], b = ref$[1];
+        if (indices[a] === void 8) {
+          indices[a] = i++;
+        }
+        if (indices[b] === void 8) {
+          indices[b] = i++;
+        }
+      }
+      out = [];
+      for (i$ = 0, len$ = koalice.length; i$ < len$; ++i$) {
+        ref$ = koalice[i$], aNazev = ref$[0], bNazev = ref$[1], pocet = ref$[2];
+        a = indices[aNazev];
+        b = indices[bNazev];
+        out[a] == null && (out[a] = []);
+        out[b] == null && (out[b] = []);
+        out[a][b] = pocet;
+        out[b][a] = pocet;
+        out[a].strana = {
+          nazev: aNazev,
+          zkratka: zkratky[aNazev]
+        };
+        out[b].strana = {
+          nazev: bNazev,
+          zkratka: zkratky[bNazev]
+        };
+      }
+      res$ = [];
+      for (strana in out) {
+        obj = out[strana];
+        res$.push(obj);
+      }
+      out_arr = res$;
+      len = 0;
+      for (i$ = 0, len$ = out_arr.length; i$ < len$; ++i$) {
+        arr = out_arr[i$];
+        len = Math.max(arr.length, len);
+      }
+      for (i$ = 0, len$ = out_arr.length; i$ < len$; ++i$) {
+        arr = out_arr[i$];
+        for (j$ = 0, len1$ = (ref$ = (fn$())).length; j$ < len1$; ++j$) {
+          i = ref$[j$];
+          if (arr[i] === void 8) {
+            arr[i] = 0;
+          }
+        }
+      }
+      return out_arr;
+      function fn$(){
+        var i$, to$, results$ = [];
+        for (i$ = 0, to$ = len; i$ < to$; ++i$) {
+          results$.push(i$);
+        }
+        return results$;
+      }
+    };
+
+// Generated by LiveScript 1.2.0
+(function(){
+    var init;
+    init = function(){
+      var data, container, x$, chord, width, height, innerRadius, outerRadius, colors, arcFill, chordFill, y$, svg, defs, z$, drawing, def, def2, z1$, z2$, z3$, z4$, z5$;
+      data = getData();
+      container = d3.select('#kolecko');
+      new Tooltip().watchElements();
+      x$ = chord = d3.layout.chord();
+      x$.matrix(data);
+      x$.padding(0.05);
+      width = document.getElementById('kolecko').offsetWidth;
+      height = document.getElementById('kolecko').offsetWidth;
+      innerRadius = (width - 60) * 0.48;
+      outerRadius = (height - 60) * 0.5;
+      colors = ['#ffff99', '#6a3d9a', '#a6cee3', '#1f78b4', '#b2df8a', '#33a02c', 'black', '#fdbf6f', '#ff7f00', '#b15928', 'gray', '#fb9a99', '#e31a1c'];
+      arcFill = function(d, i){
+        return colors[i];
+      };
+      chordFill = d3.scale.ordinal().range(colors);
+      y$ = svg = container.append('svg');
+      y$.attr('width', width);
+      y$.attr('height', height);
+      defs = svg.append('defs');
+      z$ = drawing = svg.append('g');
+      z$.attr('transform', "translate(" + width / 2 + ", " + height / 2 + ")");
+      def = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius + 5);
+      def2 = d3.svg.arc().innerRadius(innerRadius).outerRadius(outerRadius);
+      z1$ = drawing.selectAll('path.radius').data(chord.groups).enter().append('path');
+      z1$.attr('class', 'radius');
+      z1$.style('fill', arcFill);
+      z1$.attr('d', def2);
+      z2$ = defs.selectAll('path').data(chord.groups).enter().append('path');
+      z2$.attr('id', function(d, i){
+        return "textPath-" + i;
+      });
+      z2$.attr('d', def);
+      z3$ = drawing.selectAll('text').data(chord.groups).enter().append('text');
+      z4$ = z3$.append('textPath');
+      z4$.attr('xlink:href', function(d, i){
+        return '#textPath-' + i;
+      });
+      z4$.text(function(d, i){
+        return data[i].strana.zkratka;
+      });
+      def = d3.svg.chord().radius(innerRadius);
+      z5$ = drawing.selectAll('path.chord').data(chord.chords).enter().append('path');
+      z5$.attr('class', 'chord');
+      z5$.attr('d', def);
+      z5$.style('fill', function(d, i){
+        return chordFill(i);
+      });
+      z5$.style('stroke', function(d, i){
+        return chordFill(i);
+      });
+      z5$.attr('data-tooltip', function(d){
+        var source, target;
+        source = d.source, target = d.target;
+        return "<b>" + data[source.index].strana.nazev + "</b> a <b>" + data[target.index].strana.nazev + "</b> sdílí na kandidátkách <b>" + source.value + "</b> lidí";
+      });
+      return z5$;
+    };
+    if (typeof d3 != 'undefined' && d3 !== null) {
+      init();
+    } else {
+      $(window).bind('load', function(){
+        if (typeof d3 != 'undefined' && d3 !== null) {
+          return init();
+        }
+      });
+    }
+  }).call(this);
+  
